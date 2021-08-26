@@ -1,6 +1,6 @@
 ---
 name: Pull Request
-about: Please follow the guidelines within the [README.md](https://github.com/CharlieMoon37/Test_Repo/blob/master/README.md)
+about: Please follow the guidelines in the [README.md](https://github.com/CharlieMoon37/Test_Repo/blob/master/README.md)
 title: ''
 labels: ''
 assignees: ''
