@@ -22,7 +22,7 @@ jobs:
         id: modified
         run: |
           for changed_file in ${{ steps.files.outputs.all }}; do
-            if [[ ${changed_file} == chaostoolkit/__init__.py ]];
+            if [[ ${changed_file} =~ ^chaostoolkit\/__init__\.py$ ]];
             then
               echo "::set-output name=MODIFIED::TRUE"; # __init__.py was modified
               exit 0
