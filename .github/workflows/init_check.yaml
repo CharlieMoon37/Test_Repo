@@ -29,12 +29,15 @@ jobs:
             fi
           done
           if [[ ${init_modified} == false ]];
+          then
             echo "__init__.py was not modified"
           fi
           if [[ ${changelog_modified} == false ]];
+          then
             echo "CHANGELOG.md was not modified"
           fi
           if [[ ${init_modified} == false || ${changelog_modified} == false ]];
+          then
             exit 1
           fi
           exit 0
