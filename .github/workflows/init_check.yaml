@@ -17,15 +17,15 @@ jobs:
       - name: Determine if __init__.py modified
         id: modified
         run: |
-          init_modified = false
-          changelog_modified = false
+          init_modified=false
+          changelog_modified=false
           for changed_file in ${{ steps.files.outputs.all_modified_files }}; do
             if [[ ${changed_file} == "chaostoolkit/__init__.py" ]];
             then
-              init_modified = true # __init__.py was modified
+              init_modified=true # __init__.py was modified
             elif [[ ${changed_file} == "CHANGELOG.md" ]];
             then
-              changelog_modified = true # CHANGELOG.md was modified
+              changelog_modified=true # CHANGELOG.md was modified
             fi
           done
           if [[ ${init_modified} == false ]];
