@@ -2,7 +2,9 @@ name: Check __init__.py Modified
 
 on:
   push:
-    branches: [master]
+    tags:
+      - '[0-9]+.[0-9]+.[0-9]+'
+      - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
 
 jobs:
   check-init:
@@ -10,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 0
+          fetch-depth: 2
       - name: Get changed files
         uses: tj-actions/changed-files@v1.1.2
         id: files
