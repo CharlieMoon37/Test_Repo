@@ -7,6 +7,16 @@ on:
       - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
 
 jobs:
+  check-changelog:
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@v2
+      - name: Check Changelog Modified
+        uses: dangoslen/changelog-enforcer@v2
+        with:
+          changeLogPath: 'CHANGELOG.md'
+          missingUpdateErrorMessage: |
+            Please modify `CHANGELOG.md` to reflect the new release
   check-init:
     runs-on: ubuntu-20.04
     steps:
