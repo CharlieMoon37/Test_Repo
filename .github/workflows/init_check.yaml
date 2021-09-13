@@ -2,7 +2,7 @@ name: Check __init__.py Modified
 
 on:
   push:
-    branches: [main]
+    branches: [master]
 
 jobs:
   check-release:
