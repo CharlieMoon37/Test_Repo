@@ -2,45 +2,39 @@ name: Check __init__.py Modified
 
 on:
   push:
-    tags:
-      - '[0-9]+.[0-9]+.[0-9]+'
-      - '[0-9]+.[0-9]+.[0-9]+rc[0-9]+'
+    branches: [main]
 
 jobs:
-  check-changelog:
-    runs-on: ubuntu-20.04
-    steps:
-      - uses: actions/checkout@v2
-      - name: Check Changelog Modified
-        uses: dangoslen/changelog-enforcer@v2
-        with:
-          changeLogPath: 'CHANGELOG.md'
-          missingUpdateErrorMessage: |
-            Please modify `CHANGELOG.md` to reflect the new release
-  check-init:
+  check-release:
     runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 2
+          fetch-depth: 0
       - name: Get changed files
         uses: tj-actions/changed-files@v1.1.2
         id: files
       - name: Determine if __init__.py modified
         id: modified
         run: |
+          init_modified = false
+          changelog_modified = false
           for changed_file in ${{ steps.files.outputs.all_modified_files }}; do
             if [[ ${changed_file} == "chaostoolkit/__init__.py" ]];
             then
-              echo "::set-output name=MODIFIED::TRUE"; # __init__.py was modified
-              exit 0
+              init_modified = true # __init__.py was modified
+            elif [[ ${changed_file} == "CHANGELOG.md" ]];
+            then
+              changelog_modified = true # CHANGELOG.md was modified
             fi
           done
-          echo "::set-output name=MODIFIED::FALSE" # __init__.py was not modified
+          if [[ ${init_modified} == false ]];
+            echo "__init__.py was not modified"
+          fi
+          if [[ ${changelog_modified} == false ]];
+            echo "CHANGELOG.md was not modified"
+          fi
+          if [[ ${init_modified} == false || ${changelog_modified} == false ]];
+            exit 1
+          fi
           exit 0
-      - name: Check Modified
-        if: ${{ steps.modified.outputs.MODIFIED == 'FALSE' }}
-        uses: actions/github-script@v3
-        with:
-          script: |
-              core.setFailed('__init__.py was not modified')
