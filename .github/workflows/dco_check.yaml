@@ -1,17 +1,45 @@
 name: DCO Check
 
-on: [pull_request]
+on: 
+  pull_request:
 
 jobs:
-  commits_check_job:
+  dco_check:
     runs-on: ubuntu-20.04
     steps:
-    - name: Get PR Commits
-      id: commits
+    - uses: actions/checkout@master
+    - name: Get Original PR Commits
+      id: original-commits
       uses: tim-actions/get-pr-commits@master
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
-    - name: DCO Check
+    - name: Original DCO Check
       uses: tim-actions/dco@master
       with:
-        commits: ${{ steps.commits.outputs.commits }}
+        commits: ${{ steps.original-commits.outputs.commits }}
+    - name: Sign Last Commit 
+      if: always()
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        git checkout "${GITHUB_HEAD_REF}"
+        git config --global user.name ${GITHUB_ACTOR}
+        git config --global user.email "${GITHUB_ACTOR}@users.noreply.github.com"
+        git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/${GITHUB_REPOSITORY}.git"
+        
+        git add .
+        git commit --amend --no-edit --signoff
+        git commit --amend --no-edit --signoff
+        git commit --amend --no-edit --signoff
+        git push -u origin ${GITHUB_HEAD_REF} -f
+    - name: Get Changed PR Commits
+      if: always()
+      id: changed-commits
+      uses: tim-actions/get-pr-commits@master
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+    - name: Changed DCO Check
+      if: always()
+      uses: tim-actions/dco@master
+      with:
+        commits: ${{ steps.changed-commits.outputs.commits }}
