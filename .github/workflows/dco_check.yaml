@@ -31,7 +31,6 @@ jobs:
         git add .
         git commit --amend --no-edit --signoff
         git commit --amend --no-edit --signoff
-        git commit --amend --no-edit --signoff
         git push -u origin ${GITHUB_HEAD_REF} -f
     - name: Get Changed PR Commits
       if: always()
