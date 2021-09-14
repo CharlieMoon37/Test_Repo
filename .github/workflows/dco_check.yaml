@@ -3,7 +3,7 @@ name: DCO Check
 on: [pull_request]
 
 jobs:
-  commits_check_job:
+  dco_check:
     runs-on: ubuntu-20.04
     steps:
     - name: Get PR Commits
