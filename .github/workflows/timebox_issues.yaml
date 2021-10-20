@@ -11,7 +11,7 @@ jobs:
       - name: Check Label
         id: check-label
         run: |
-          if [[ ${{ github.event.label.name =~ ^[1|2]?[0-9]days$ }} ]];
+          if [[ ${{ github.event.label.name }} =~ ^[1|2]?[0-9]days$ ]];
           then
             echo "::set-output name=TIMEBOXLABEL::TRUE";
             exit 0
