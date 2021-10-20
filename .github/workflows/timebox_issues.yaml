@@ -6,14 +6,23 @@ on:
 
 jobs:
   check-label:
-    if: ${{ github.event.label.name =~ ^[1|2]?[0-9]days$ }}
     runs-on: ubuntu-latest
     steps:
-      - name: Create comment
+      - name: Check Label
+        id: check-label
+        run: |
+          if [[ ${{ github.event.label.name =~ ^[1|2]?[0-9]days$ }} ]];
+          then
+            echo "::set-output name=TIMEBOXLABEL::TRUE";
+            exit 0
+          fi
+          echo "::set-output name=TIMEBOXLABEL::FALSE";
+          exit 0
+      - name: Create Comment
+        if: ${{ steps.check-label.outputs.TIMEBOXLABEL == 'TRUE' }}
         uses: jungwinter/comment@v1
-        id: create
         with:
           type: create
-          body: "${{ github.event.issue.number }} Added"
-          issue_number: ${{ github.event.label.name }}
+          body: "${{ github.event.label.name }} Added"
+          issue_number: ${{ github.event.issue.number }}
           token: ${{ secrets.GITHUB_TOKEN }}
