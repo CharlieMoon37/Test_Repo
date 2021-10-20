@@ -6,7 +6,7 @@ on:
 
 jobs:
   check-label:
-    # if: ${{ github.event.label.name =~ ^[1|2]?[0-9]days$ }}
+    if: ${{ github.event.label.name =~ ^[1|2]?[0-9]days$ }}
     runs-on: ubuntu-latest
     steps:
       - name: Create comment
@@ -15,5 +15,5 @@ jobs:
         with:
           type: create
           body: "${{ github.event.issue.number }} Added"
-          issue_number: ${{ github.event.issue.number }}
+          issue_number: ${{ github.event.label.name }}
           token: ${{ secrets.GITHUB_TOKEN }}
