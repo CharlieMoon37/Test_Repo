@@ -31,7 +31,7 @@ jobs:
         if: ${{ steps.check-label.outputs.TIMEBOXLABEL == 'TRUE' }}
         uses: Ilshidur/action-slack@master
         env:
-          SLACK_WEBHOOK: https://hooks.slack.com/services/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
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
           SLACK_AVATAR: https://avatars.githubusercontent.com/u/73334978?s=60&v=4
           SLACK_USERNAME: reliably-ci
         with:
