@@ -1,0 +1,19 @@
+name: Initiate Timeboxed Issue
+
+on:
+  issues:
+    types: [labeled]
+
+jobs:
+  check-label:
+    # if: ${{ github.event.label.name =~ ^[1|2]?[0-9]days$ }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create comment
+        uses: jungwinter/comment@v1
+        id: create
+        with:
+          type: create
+          body: "${{ github.event.issue.number }} Added"
+          issue_number: ${{ github.event.issue.number }}
+          token: ${{ secrets.GITHUB_TOKEN }}
