@@ -27,3 +27,12 @@ jobs:
           body: "${{ github.event.label.name }} Added"
           issue_number: ${{ github.event.issue.number }}
           token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Notify to slack
+        if: ${{ steps.check-label.outputs.TIMEBOXLABEL == 'TRUE' }}
+        uses: Ilshidur/action-slack@master
+        env:
+          SLACK_WEBHOOK: https://hooks.slack.com/services/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
+          SLACK_AVATAR: https://avatars.githubusercontent.com/u/73334978?s=60&v=4
+          SLACK_USERNAME: reliably-ci
+        with:
+          args: "New Issue Created with `${{ github.event.label.name }}` Label!"
